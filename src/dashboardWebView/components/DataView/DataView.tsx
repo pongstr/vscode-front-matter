@@ -22,30 +22,30 @@ import { DataType } from '../../../models/DataType';
 import { TelemetryEvent } from '../../../constants';
 import { NavigationItem } from '../Layout';
 
-export interface IDataViewProps {}
+export type IDataViewProps = Record<string, unknown>
 
-export const DataView: React.FunctionComponent<IDataViewProps> = (props: React.PropsWithChildren<IDataViewProps>) => {
+export const DataView: React.FunctionComponent<IDataViewProps> = () => {
   const [ selectedData, setSelectedData ] = useState<DataFile | null>(null);
   const [ selectedIndex, setSelectedIndex ] = useState<number | null>(null);
-  const [ dataEntries, setDataEntries ] = useState<any | any[] | null>(null);
+  const [ dataEntries, setDataEntries ] = useState<unknown[]>([]);
   const settings = useRecoilValue(SettingsSelector);
 
   const setSchema = (dataFile: DataFile) => {
     setSelectedData(dataFile);
     setSelectedIndex(null);
-    setDataEntries(null);
+    setDataEntries([]);
 
     Messenger.send(DashboardMessage.getDataEntries, { ...dataFile });
   };
 
-  const messageListener = (message: MessageEvent<EventData<any>>) => {
+  const messageListener = (message: MessageEvent<EventData<unknown[]>>) => {
     if (message.data.command === DashboardCommand.dataFileEntries) {
       setDataEntries(message.data.data);
     }
   };
 
   const deleteItem = useCallback((index: number) => {
-    const dataClone: any[] = Object.assign([], dataEntries);
+    const dataClone: unknown[] = Array.isArray(dataEntries) ? [...dataEntries] : [dataEntries]
 
     if (!selectedData) {
       return;
@@ -55,15 +55,15 @@ export const DataView: React.FunctionComponent<IDataViewProps> = (props: React.P
     updateData(dataClone);
   }, [selectedData, dataEntries]);
 
-  
-  const onSubmit = useCallback((data: any) => {
+
+  const onSubmit = useCallback((data: unknown) => {
     if (selectedData?.singleEntry) {
       // Needs to add a single entry
       updateData(data);
       return;
     }
 
-    const dataClone: any[] = Object.assign([], dataEntries);
+    const dataClone: unknown[] = Object.assign([], dataEntries);
     if (selectedIndex !== null && selectedIndex !== undefined) {
       dataClone[selectedIndex] = data;
     } else {
@@ -73,7 +73,7 @@ export const DataView: React.FunctionComponent<IDataViewProps> = (props: React.P
   }, [selectedData, dataEntries, selectedIndex]);
 
 
-  const onSortEnd = useCallback(({ oldIndex, newIndex }: any) => {
+  const onSortEnd = useCallback(({ oldIndex, newIndex }: Record<'oldIndex'|'newIndex', number>) => {
     if (!dataEntries || dataEntries.length === 0) {
       return null;
     }
@@ -109,16 +109,22 @@ export const DataView: React.FunctionComponent<IDataViewProps> = (props: React.P
   }, [selectedData]);
 
   const dataEntry = useMemo(() => {
+
+
     if (selectedData?.singleEntry) {
       return dataEntries || {};
     }
 
-    return (dataEntries && selectedIndex !== null && selectedIndex !== undefined) ? dataEntries[selectedIndex] : null;
-  }, [selectedData, , dataEntries, selectedIndex]);
+    return (dataEntries && dataEntries.length > 0 && selectedIndex !== null && selectedIndex !== undefined)
+      ? dataEntries.at(selectedIndex)
+      : null
+
+
+  }, [selectedData, dataEntries, selectedIndex]);
 
   useEffect(() => {
     Messenger.listen(messageListener);
-    
+
     Messenger.send(DashboardMessage.sendTelemetry, {
       event: TelemetryEvent.webviewDataView
     });
@@ -146,7 +152,7 @@ export const DataView: React.FunctionComponent<IDataViewProps> = (props: React.P
 
     return clonedFile;
   }).filter(d => d !== null) as DataFile[];
-  
+
   return (
     <div className="flex flex-col h-full overflow-auto inset-y-0">
       <Header settings={settings} />
@@ -197,7 +203,7 @@ export const DataView: React.FunctionComponent<IDataViewProps> = (props: React.P
                                   <Container onSortEnd={onSortEnd} useDragHandle>
                                     {
                                       (dataEntries as any[] || []).map((dataEntry, idx) => (
-                                        <SortableItem 
+                                        <SortableItem
                                           key={dataEntry[selectedData.labelField] || `entry-${idx}`}
                                           value={dataEntry[selectedData.labelField] || `Entry ${idx+1}`}
                                           index={idx}
@@ -229,9 +235,9 @@ export const DataView: React.FunctionComponent<IDataViewProps> = (props: React.P
                       <h2 className={`text-lg text-gray-500 dark:text-whisper-900`}>Create or modify your {selectedData.title.toLowerCase()} data</h2>
                       {
                         selectedData ? (
-                          <DataForm 
-                            schema={selectedData?.schema} 
-                            model={dataEntry} 
+                          <DataForm
+                            schema={selectedData?.schema}
+                            model={dataEntry}
                             onSubmit={onSubmit}
                             onClear={() => setSelectedIndex(null)} />
                         ) : (

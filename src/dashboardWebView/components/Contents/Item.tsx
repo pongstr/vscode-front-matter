@@ -11,11 +11,11 @@ import { DashboardViewType } from '../../models';
 import { ContentActions } from './ContentActions';
 import { useMemo } from 'react';
 
-export interface IItemProps extends Page {}
+export type IItemProps = Page
 
 const PREVIEW_IMAGE_FIELD = 'fmPreviewImage';
 
-export const Item: React.FunctionComponent<IItemProps> = ({ fmFilePath, date, title, description, type, ...pageData }: React.PropsWithChildren<IItemProps>) => {
+export const Item: React.FunctionComponent<IItemProps> = ({ fmFilePath, date, title, description, ...pageData }: React.PropsWithChildren<IItemProps>) => {
   const view = useRecoilValue(ViewSelector);
   const settings = useRecoilValue(SettingsSelector);
   const draftField = useMemo(() => settings?.draftField, [settings]);
@@ -35,7 +35,7 @@ export const Item: React.FunctionComponent<IItemProps> = ({ fmFilePath, date, ti
 
     return description;
   }, [description]);
-  
+
   const openFile = () => {
     Messenger.send(DashboardMessage.openFile, fmFilePath);
   };
@@ -61,7 +61,7 @@ export const Item: React.FunctionComponent<IItemProps> = ({ fmFilePath, date, ti
     } else if (Array.isArray(tagsValue)) {
       return tagsValue;
     }
-    
+
     return [];
   }, [settings, pageData]);
 
@@ -69,7 +69,7 @@ export const Item: React.FunctionComponent<IItemProps> = ({ fmFilePath, date, ti
     return (
       <li className="relative">
         <div className={`group flex flex-wrap items-start content-start h-full w-full bg-gray-50 dark:bg-vulcan-200 text-vulcan-500 dark:text-whisper-500 text-left shadow-md dark:shadow-none hover:shadow-xl dark:hover:bg-vulcan-100 border border-gray-200 dark:border-vulcan-50`}>
-          
+
           <button onClick={openFile} className="relative h-36 w-full overflow-hidden border-b border-gray-100 dark:border-vulcan-100 dark:group-hover:border-vulcan-200 cursor-pointer">
             {
               pageData[PREVIEW_IMAGE_FIELD] ? (
@@ -88,7 +88,7 @@ export const Item: React.FunctionComponent<IItemProps> = ({ fmFilePath, date, ti
 
               <DateField className={`mr-4`} value={date} />
 
-              <ContentActions 
+              <ContentActions
                 title={title}
                 path={fmFilePath}
                 scripts={settings?.scripts}
@@ -105,8 +105,8 @@ export const Item: React.FunctionComponent<IItemProps> = ({ fmFilePath, date, ti
                   {
                     tags.map((tag, index) => (
                       tag && (
-                        <span 
-                          key={index} 
+                        <span
+                          key={index}
                           className="inline-block mr-1 mt-1 text-[#5D561D] dark:text-[#F0ECD0] text-xs">
                           #{tag}
                         </span>
@@ -125,13 +125,13 @@ export const Item: React.FunctionComponent<IItemProps> = ({ fmFilePath, date, ti
       <li className="relative">
         <div className={`px-5 cursor-pointer w-full text-left grid grid-cols-12 gap-x-4 sm:gap-x-6 xl:gap-x-8 py-2 border-b border-gray-300 hover:bg-gray-200 dark:border-vulcan-50 dark:hover:bg-vulcan-50 hover:bg-opacity-70`}>
           <div className="col-span-8 font-bold truncate flex items-center space-x-4">
-            <button 
-              title={`Open: ${escapedTitle}`} 
+            <button
+              title={`Open: ${escapedTitle}`}
               onClick={openFile}>
               {escapedTitle}
             </button>
 
-            <ContentActions 
+            <ContentActions
               title={escapedTitle}
               path={fmFilePath}
               scripts={settings?.scripts}

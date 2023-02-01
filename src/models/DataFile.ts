@@ -4,7 +4,7 @@ export interface DataFile {
   file: string;
   fileType: "json" | "yaml";
   labelField: string;
-  schema?: any;
+  schema?: unknown;
   type?: string;
   singleEntry?: boolean;
 }

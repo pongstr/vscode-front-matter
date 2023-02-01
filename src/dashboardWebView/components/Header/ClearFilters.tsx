@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 export const guardRecoilDefaultValue = (
   candidate: any
 ): candidate is DefaultValue => {
-  if (candidate instanceof DefaultValue) return true;
+  if (candidate instanceof DefaultValue) {return true;}
   return false;
 };
 
@@ -44,7 +44,7 @@ export const ClearFilters: React.FunctionComponent<IClearFiltersProps> = (props:
     }
   }, [folder, tag, category]);
 
-  if (!show) return null;
+  if (!show) {return null;}
   
   return (
     <button className="flex items-center hover:text-teal-600" onClick={reset} title={`Clear filters, grouping, and sorting`}>

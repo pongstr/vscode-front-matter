@@ -19,7 +19,8 @@ export const WelcomeScreen: React.FunctionComponent<IWelcomeScreenProps> = ({set
       event: TelemetryEvent.webviewWelcomeScreen
     });
 
-    const crntState: any = Messenger.getState() || {};
+    const crntState = Messenger.getState() || {} as Record<string, unknown>;
+
     Messenger.setState({
       ...crntState,
       isWelcomeConfiguring: true
@@ -29,7 +30,7 @@ export const WelcomeScreen: React.FunctionComponent<IWelcomeScreenProps> = ({set
       Messenger.send(DashboardMessage.reload)
     };
   }, []);
-  
+
   return (
     <div className={`h-full overflow-auto py-8`}>
       <main>
@@ -56,7 +57,7 @@ export const WelcomeScreen: React.FunctionComponent<IWelcomeScreenProps> = ({set
                       <GitHubIcon className="w-8 h-8" />
                       <span className={`text-lg ml-2`}>GitHub / Documentation</span>
                     </a>
-                    
+
                     <a href={SPONSOR_LINK} title={`Become a sponsor`} className="flex items-center px-1 text-vulcan-300 hover:text-vulcan-500 dark:text-whisper-500 dark:hover:text-teal-500">
                       <HeartIcon className="w-8 h-8" />
                       <span className={`text-lg ml-2`}>Sponsor</span>

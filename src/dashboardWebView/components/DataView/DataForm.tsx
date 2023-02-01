@@ -8,9 +8,9 @@ import { ErrorBoundary } from '@sentry/react';
 import { DataFormControls } from './DataFormControls';
 
 export interface IDataFormProps {
-  schema: any;
-  model: any;
-  onSubmit: (model: any) => void;
+  schema: object;
+  model: unknown;
+  onSubmit: (model: unknown) => void;
   onClear: () => void;
 }
 
@@ -49,15 +49,16 @@ export const DataForm: React.FunctionComponent<IDataFormProps> = ({ schema, mode
           )
         }
 
-        <AutoForm 
-          schema={bridge} 
+        <AutoForm
+          schema={bridge}
           model={model || {}}
           onSubmit={onSubmit}
-          ref={(form: any) => form?.reset()}>
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ref={(form: any) => form.reset()}>
           <div className={`fields`}>
             <AutoFields />
           </div>
-          
+
           <div className={`errors`}>
             <ErrorsField />
           </div>

@@ -63,4 +63,4 @@ if (elm) {
 }
 
 // Webpack HMR
-if ((module as any).hot) (module as any).hot.accept();
+if ((module as any).hot) {(module as any).hot.accept();}

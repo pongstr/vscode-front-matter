@@ -26,7 +26,7 @@ export default function usePages(pages: Page[]) {
   /**
    * Process all the pages by applying the sorting, filtering and searching.
    */
-  const processPages = useCallback((searchedPages: Page[], fullProcess: boolean = true) => {
+  const processPages = useCallback((searchedPages: Page[], fullProcess = true) => {
     const framework = settings?.crntFramework;
 
     // Filter the pages
@@ -167,7 +167,7 @@ export default function usePages(pages: Page[]) {
 
 
   useEffect(() => {
-    let usedSorting = sorting;
+    const usedSorting = sorting;
 
     if (!usedSorting) {
       const lastSort = settings?.dashboardState.contents.sorting;      
@@ -178,7 +178,7 @@ export default function usePages(pages: Page[]) {
     }
 
     // Check if search needs to be performed
-    let searchedPages = pages;
+    const searchedPages = pages;
     if (search) {
       Messenger.send(DashboardMessage.searchPages, { query: search });
     } else {

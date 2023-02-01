@@ -89,7 +89,7 @@ export const Sorting: React.FunctionComponent<ISortingProps> = ({disableCustomSo
     }
   }
 
-  let crntSort = allOptions.find(x => x.id === crntSortingOption?.id) || sortOptions[0];
+  const crntSort = allOptions.find(x => x.id === crntSortingOption?.id) || sortOptions[0];
 
   return (
     <div className="flex items-center">

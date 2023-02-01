@@ -47,7 +47,7 @@ export const Media: React.FunctionComponent<IMediaProps> = (props: React.PropsWi
       return [];
     }
 
-    let groupedFolders = [];
+    const groupedFolders = [];
 
     for (const cFolder of (settings?.contentFolders || [])) {
       const foldersPath = parseWinPath(cFolder.path);

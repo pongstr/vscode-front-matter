@@ -31,7 +31,7 @@ export const App: React.FunctionComponent<IAppProps> = ({showWelcome}: React.Pro
   const navigate = useNavigate();
   useDarkMode();
 
-  const viewState: any = Messenger.getState() || {};
+  const viewState = Messenger.getState() as Record<string, unknown> ?? {} as Record<string, unknown>;
 
   const isAllowed = (features: string[], flag: string) => {
     if (!features ||( features.length > 0 && !features.includes(flag))) {
@@ -62,7 +62,7 @@ export const App: React.FunctionComponent<IAppProps> = ({showWelcome}: React.Pro
     return <Spinner />;
   }
 
-  if (showWelcome || viewState.isWelcomeConfiguring) {
+  if (showWelcome || (viewState && 'isWelcomeConfiguring' in viewState)) {
     return <WelcomeScreen settings={settings} />;
   }
 
@@ -85,7 +85,7 @@ Stack: ${componentStack}`);
           <Route path={routePaths.contents} element={<Contents pages={pages} loading={loading} />} />
           <Route path={routePaths.media} element={<Media />} />
           <Route path={routePaths.snippets} element={<Snippets />} />
-          
+
           {
             allowDataView && <Route path={routePaths.data} element={<DataView />} />
           }

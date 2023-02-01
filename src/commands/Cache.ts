@@ -19,8 +19,9 @@ export class Cache {
     return cache || undefined;
   }
 
-  public static async set(key: string, data: any, type: "workspace" | "global") {
-    await Extension.getInstance().setState(key, data, "workspace");
+
+  public static async set(key: string, data: unknown, type: "workspace" | "global" = 'workspace') {
+    await Extension.getInstance().setState(key, data, type);
   }
 
   private static async clear() {

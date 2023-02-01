@@ -234,7 +234,7 @@ export const Item: React.FunctionComponent<IItemProps> = ({media}: React.PropsWi
   };
 
   const getMediaDetails = () => {
-    let sizeDetails = [];
+    const sizeDetails = [];
 
     const dimensions = getDimensions();
     if (dimensions) {

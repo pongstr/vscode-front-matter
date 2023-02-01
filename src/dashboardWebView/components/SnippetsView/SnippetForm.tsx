@@ -51,7 +51,7 @@ const SnippetForm: React.ForwardRefRenderFunction<SnippetFormHandle, ISnippetFor
   }, [mediaData]);
 
   const snippetBody = useMemo(() => {
-    let body = typeof snippet.body === "string" ? snippet.body : snippet.body.join(`\n`);
+    const body = typeof snippet.body === "string" ? snippet.body : snippet.body.join(`\n`);
     
     const obj: any = {};
     for (const field of fields) {

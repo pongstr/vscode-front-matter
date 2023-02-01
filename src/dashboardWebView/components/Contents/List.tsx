@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { DashboardViewType } from '../../models';
 import { ViewSelector } from '../../state';
 
-export interface IListProps {}
+export type IListProps = Record<string, unknown>
 
 export const List: React.FunctionComponent<IListProps> = ({children}: React.PropsWithChildren<IListProps>) => {
   const view = useRecoilValue(ViewSelector);
